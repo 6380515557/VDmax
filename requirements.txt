@@ -1,0 +1,6 @@
+pip install fastapi
+pip install "uvicorn[standard]"
+pip install "yt-dlp[default]"
+pip install python-multipart
+pip install pydantic==2.9.0
+pip install python-dotenv
