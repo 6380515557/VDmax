@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://vdmax-backend.onrender.com'
 const API_KEY = import.meta.env.VITE_API_KEY || 'VDmax-YourSecureKey-2025-ChangeME'
 
 const apiClient = axios.create({
@@ -9,7 +9,7 @@ const apiClient = axios.create({
     'Content-Type': 'application/json',
     'X-API-Key': API_KEY
   },
-  timeout: 60000
+  timeout: 600000
 })
 
 // Response interceptor
