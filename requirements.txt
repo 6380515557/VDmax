@@ -1,6 +1,0 @@
-fastapi
-"uvicorn[standard]"
-"yt-dlp[default]"
-python-multipart
-pydantic==2.9.0
-python-dotenv
