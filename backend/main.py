@@ -65,7 +65,7 @@ async def get_video_info(request: VideoInfoRequest):
     }
 
     try:
-        with ytdlp.YoutubeDL(ydlopts) as ydl:
+        with yt_dlp.YoutubeDL(ydlopts) as ydl:
             info = ydl.extract_info(request.url, download=False)
         return info
     except Exception as e:
@@ -93,7 +93,7 @@ async def get_download_url(request: DownloadURLRequest):
     }
 
     try:
-        with ytdlp.YoutubeDL(ydlopts) as ydl:
+        with yt_dlp.YoutubeDL(ydlopts) as ydl:
             info = ydl.extract_info(request.url, download=False)
             download_url = None
 
