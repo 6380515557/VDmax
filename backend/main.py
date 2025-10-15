@@ -14,6 +14,7 @@ load_dotenv()
 # ======================== CONFIGURATION ========================
 API_KEY = os.getenv("API_KEY", "VDmax-YourSecureKey-2025-ChangeME")
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:8081").split(",")
+COOKIES_FILE_PATH = os.getenv("COOKIES_FILE_PATH", "./youtube_cookies.txt") 
 
 app = FastAPI(
     title="VDmax Video Downloader API",
@@ -57,6 +58,21 @@ def detect_platform(url: str) -> str:
             return platform
     return 'other'
 
+ydlopts = {
+    "quiet": True,
+    "no_warnings": True,
+    "extract_flat": False,
+    "nocheckcertificate": True,
+    "merge_output_format": "mp4",
+    "postprocessors": [
+        {
+            "key": "FFmpegVideoConvertor",
+            "preferredformat": "mp4",
+        }
+    ],
+    "cookiefile": COOKIES_FILE_PATH,  # <<<< Added cookiefile here for YouTube authentication
+}
+
 # ======================== MODELS ========================
 class VideoURLRequest(BaseModel):
     url: str = Field(..., description="Video URL from any platform")
@@ -92,6 +108,7 @@ class DownloadURLResponse(BaseModel):
     has_audio: bool
     has_video: bool
     timestamp: str
+
 
 # ======================== ENDPOINTS ========================
 @app.get("/", tags=["Health"])
@@ -242,6 +259,21 @@ async def get_download_url(
             
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+
+ydlopts = {
+    "format": quality_map.get(quality, "bestvideo+bestaudio/best"),
+    "quiet": True,
+    "no_warnings": True,
+    "nocheckcertificate": True,
+    "merge_output_format": "mp4",
+    "postprocessors": [
+        {
+            "key": "FFmpegVideoConvertor",
+            "preferredformat": "mp4",
+        }
+    ],
+    "cookiefile": COOKIES_FILE_PATH,  # <<<< And here also add the cookiefile option
+}
 
 if __name__ == "__main__":
     import uvicorn
